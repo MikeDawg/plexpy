@@ -165,10 +165,8 @@ class WebInterface(object):
 
     @cherrypy.expose
     def history(self):
-        from plexpy import datafactory
-        data_factory = datafactory.DataFactory()
-
         # Make sure our library sections are up to date.
+        data_factory = datafactory.DataFactory()
         data_factory.update_library_sections()
 
         return serve_template(templatename="history.html", title="History")
@@ -813,15 +811,13 @@ class WebInterface(object):
             return None
 
     @cherrypy.expose
-    def info(self, library_id=None, item_id=None, source=None, **kwargs):
-        from plexpy import datafactory
-        data_factory = datafactory.DataFactory()
-
+    def info(self, library_id=None, item_id=None, source=None, query=None, **kwargs):
         # Make sure our library sections are up to date.
+        data_factory = datafactory.DataFactory()
         data_factory.update_library_sections()
 
         metadata = None
-        query = None
+        query_string = query
 
         config = {
             "pms_identifier": plexpy.CONFIG.PMS_IDENTIFIER,
@@ -844,6 +840,8 @@ class WebInterface(object):
             else:
                 data_factory = datafactory.DataFactory()
                 query = data_factory.get_search_query(rating_key=item_id)
+                if query_string:
+                    query['query_string'] = query_string
 
         if metadata:
             return serve_template(templatename="info.html", data=metadata, title="Info", config=config)
