@@ -430,9 +430,9 @@ class PmsConnect(object):
                         'library_title': library_title,
                         'rating_key': helpers.get_xml_attr(metadata_main, 'ratingKey'),
                         'grandparent_title': helpers.get_xml_attr(metadata_main, 'grandparentTitle'),
-                        'parent_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
+                        'parent_media_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
                         'parent_title': helpers.get_xml_attr(metadata_main, 'parentTitle'),
-                        'index': helpers.get_xml_attr(metadata_main, 'index'),
+                        'media_index': helpers.get_xml_attr(metadata_main, 'index'),
                         'studio': helpers.get_xml_attr(metadata_main, 'studio'),
                         'title': helpers.get_xml_attr(metadata_main, 'title'),
                         'content_rating': helpers.get_xml_attr(metadata_main, 'contentRating'),
@@ -463,9 +463,9 @@ class PmsConnect(object):
                         'library_title': library_title,
                         'rating_key': helpers.get_xml_attr(metadata_main, 'ratingKey'),
                         'grandparent_title': helpers.get_xml_attr(metadata_main, 'grandparentTitle'),
-                        'parent_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
+                        'parent_media_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
                         'parent_title': helpers.get_xml_attr(metadata_main, 'parentTitle'),
-                        'index': helpers.get_xml_attr(metadata_main, 'index'),
+                        'media_index': helpers.get_xml_attr(metadata_main, 'index'),
                         'studio': helpers.get_xml_attr(metadata_main, 'studio'),
                         'title': helpers.get_xml_attr(metadata_main, 'title'),
                         'content_rating': helpers.get_xml_attr(metadata_main, 'contentRating'),
@@ -499,9 +499,9 @@ class PmsConnect(object):
                         'rating_key': helpers.get_xml_attr(metadata_main, 'ratingKey'),
                         'parent_rating_key': helpers.get_xml_attr(metadata_main, 'parentRatingKey'),
                         'grandparent_title': helpers.get_xml_attr(metadata_main, 'grandparentTitle'),
-                        'parent_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
+                        'parent_media_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
                         'parent_title': helpers.get_xml_attr(metadata_main, 'parentTitle'),
-                        'index': helpers.get_xml_attr(metadata_main, 'index'),
+                        'media_index': helpers.get_xml_attr(metadata_main, 'index'),
                         'studio': show_details['metadata']['studio'],
                         'title': helpers.get_xml_attr(metadata_main, 'title'),
                         'content_rating': show_details['metadata']['content_rating'],
@@ -536,9 +536,9 @@ class PmsConnect(object):
                         'parent_rating_key': helpers.get_xml_attr(metadata_main, 'parentRatingKey'),
                         'grandparent_rating_key': helpers.get_xml_attr(metadata_main, 'grandparentRatingKey'),
                         'grandparent_title': helpers.get_xml_attr(metadata_main, 'grandparentTitle'),
-                        'parent_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
+                        'parent_media_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
                         'parent_title': helpers.get_xml_attr(metadata_main, 'parentTitle'),
-                        'index': helpers.get_xml_attr(metadata_main, 'index'),
+                        'media_index': helpers.get_xml_attr(metadata_main, 'index'),
                         'studio': show_details['metadata']['studio'],
                         'title': helpers.get_xml_attr(metadata_main, 'title'),
                         'content_rating': helpers.get_xml_attr(metadata_main, 'contentRating'),
@@ -569,9 +569,9 @@ class PmsConnect(object):
                         'library_title': library_title,
                         'rating_key': helpers.get_xml_attr(metadata_main, 'ratingKey'),
                         'grandparent_title': helpers.get_xml_attr(metadata_main, 'grandparentTitle'),
-                        'parent_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
+                        'parent_media_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
                         'parent_title': helpers.get_xml_attr(metadata_main, 'parentTitle'),
-                        'index': helpers.get_xml_attr(metadata_main, 'index'),
+                        'media_index': helpers.get_xml_attr(metadata_main, 'index'),
                         'studio': helpers.get_xml_attr(metadata_main, 'studio'),
                         'title': helpers.get_xml_attr(metadata_main, 'title'),
                         'content_rating': helpers.get_xml_attr(metadata_main, 'contentRating'),
@@ -605,9 +605,9 @@ class PmsConnect(object):
                         'rating_key': helpers.get_xml_attr(metadata_main, 'ratingKey'),
                         'parent_rating_key': helpers.get_xml_attr(metadata_main, 'parentRatingKey'),
                         'grandparent_title': helpers.get_xml_attr(metadata_main, 'grandparentTitle'),
-                        'parent_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
+                        'parent_media_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
                         'parent_title': helpers.get_xml_attr(metadata_main, 'parentTitle'),
-                        'index': helpers.get_xml_attr(metadata_main, 'index'),
+                        'media_index': helpers.get_xml_attr(metadata_main, 'index'),
                         'studio': helpers.get_xml_attr(metadata_main, 'studio'),
                         'title': helpers.get_xml_attr(metadata_main, 'title'),
                         'content_rating': helpers.get_xml_attr(metadata_main, 'contentRating'),
@@ -642,9 +642,9 @@ class PmsConnect(object):
                         'parent_rating_key': helpers.get_xml_attr(metadata_main, 'parentRatingKey'),
                         'grandparent_rating_key': helpers.get_xml_attr(metadata_main, 'grandparentRatingKey'),
                         'grandparent_title': helpers.get_xml_attr(metadata_main, 'grandparentTitle'),
-                        'parent_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
+                        'parent_media_index': helpers.get_xml_attr(metadata_main, 'parentIndex'),
                         'parent_title': helpers.get_xml_attr(metadata_main, 'parentTitle'),
-                        'index': helpers.get_xml_attr(metadata_main, 'index'),
+                        'media_index': helpers.get_xml_attr(metadata_main, 'index'),
                         'studio': helpers.get_xml_attr(metadata_main, 'studio'),
                         'title': helpers.get_xml_attr(metadata_main, 'title'),
                         'content_rating': helpers.get_xml_attr(metadata_main, 'contentRating'),
@@ -732,12 +732,20 @@ class PmsConnect(object):
             logger.warn("Unable to parse XML for get_library_metadata_details.")
             return []
 
+        metadata_list = []
+
+        for a in xml_head:
+            if a.getAttribute('size'):
+                if a.getAttribute('size') == '0':
+                    metadata_list = {'metadata': None}
+                    return metadata_list
+
             if a.getElementsByTagName('Directory'):
                 result_data = a.getElementsByTagName('Directory')
                 for result in result_data:
                     key = helpers.get_xml_attr(result, 'key')
                     if key == library_id:
-                        metadata = {'type': 'library',
+                        metadata = {'media_type': 'library',
                                     'library_id': helpers.get_xml_attr(result, 'key'),
                                     'library': helpers.get_xml_attr(result, 'type'),
                                     'title': helpers.get_xml_attr(result, 'title'),
@@ -745,11 +753,11 @@ class PmsConnect(object):
                                     'thumb': helpers.get_xml_attr(result, 'thumb')
                                     }
                         if metadata['library'] == 'movie':
-                            metadata['media_type'] = 'movie'
+                            metadata['section_type'] = 'movie'
                         elif metadata['library'] == 'show':
-                            metadata['media_type'] = 'episode'
+                            metadata['section_type'] = 'episode'
                         elif metadata['library'] == 'artist':
-                            metadata['media_type'] = 'track'
+                            metadata['section_type'] = 'track'
 
             metadata_list = {'metadata': metadata}
         
@@ -1278,7 +1286,7 @@ class PmsConnect(object):
             if result_data:
                 for result in result_data:
                     children_output = {'rating_key': helpers.get_xml_attr(result, 'ratingKey'),
-                                       'index': helpers.get_xml_attr(result, 'index'),
+                                       'media_index': helpers.get_xml_attr(result, 'index'),
                                        'title': helpers.get_xml_attr(result, 'title'),
                                        'thumb': helpers.get_xml_attr(result, 'thumb'),
                                        'parent_thumb': helpers.get_xml_attr(a, 'thumb'),
