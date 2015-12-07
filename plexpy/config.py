@@ -247,6 +247,8 @@ _CONFIG_DEFINITIONS = {
     'PUSHOVER_ON_CREATED': (int, 'Pushover', 0),
     'PUSHOVER_ON_EXTDOWN': (int, 'Pushover', 0),
     'PUSHOVER_ON_INTDOWN': (int, 'Pushover', 0),
+    'REFRESH_LIBRARIES_INTERVAL': (int, 'Monitoring', 12),
+    'REFRESH_LIBRARIES_ON_STARTUP': (int, 'Monitoring', 1),
     'REFRESH_USERS_INTERVAL': (int, 'Monitoring', 12),
     'REFRESH_USERS_ON_STARTUP': (int, 'Monitoring', 1),
     'TELEGRAM_BOT_TOKEN': (str, 'Telegram', ''),

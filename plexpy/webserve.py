@@ -80,6 +80,7 @@ class WebInterface(object):
         config = {
             "launch_browser": checked(plexpy.CONFIG.LAUNCH_BROWSER),
             "refresh_users_on_startup": checked(plexpy.CONFIG.REFRESH_USERS_ON_STARTUP),
+            "refresh_librareis_on_startup": checked(plexpy.CONFIG.REFRESH_LIBRARIES_ON_STARTUP),
             "pms_identifier": plexpy.CONFIG.PMS_IDENTIFIER,
             "pms_ip": plexpy.CONFIG.PMS_IP,
             "pms_is_remote": checked(plexpy.CONFIG.PMS_IS_REMOTE),
@@ -440,6 +441,8 @@ class WebInterface(object):
             "monitor_remote_access": checked(plexpy.CONFIG.MONITOR_REMOTE_ACCESS),
             "monitoring_interval": plexpy.CONFIG.MONITORING_INTERVAL,
             "monitoring_use_websocket": checked(plexpy.CONFIG.MONITORING_USE_WEBSOCKET),
+            "refresh_libraries_interval": plexpy.CONFIG.REFRESH_LIBRARIES_INTERVAL,
+            "refresh_libraries_on_startup": checked(plexpy.CONFIG.REFRESH_LIBRARIES_ON_STARTUP),
             "refresh_users_interval": plexpy.CONFIG.REFRESH_USERS_INTERVAL,
             "refresh_users_on_startup": checked(plexpy.CONFIG.REFRESH_USERS_ON_STARTUP),
             "ip_logging_enable": checked(plexpy.CONFIG.IP_LOGGING_ENABLE),
@@ -493,7 +496,8 @@ class WebInterface(object):
             "movie_notify_enable", "tv_notify_enable", "music_notify_enable", "monitoring_use_websocket",
             "tv_notify_on_start", "movie_notify_on_start", "music_notify_on_start",
             "tv_notify_on_stop", "movie_notify_on_stop", "music_notify_on_stop",
-            "tv_notify_on_pause", "movie_notify_on_pause", "music_notify_on_pause", "refresh_users_on_startup",
+            "tv_notify_on_pause", "movie_notify_on_pause", "music_notify_on_pause", 
+            "refresh_libraries_on_startup", "refresh_users_on_startup",
             "ip_logging_enable", "movie_logging_enable", "tv_logging_enable", "music_logging_enable", 
             "pms_is_remote", "home_stats_type", "group_history_tables", "notify_consecutive", 
             "notify_recently_added", "notify_recently_added_grandparent", "monitor_remote_access"
@@ -514,8 +518,14 @@ class WebInterface(object):
             del kwargs[use_config]
 
         # Check if we should refresh our data
+        refresh_libraries = False
         refresh_users = False
         reschedule = False
+
+        if 'monitoring_interval' in kwargs and 'refresh_libraries_interval' in kwargs:
+            if (kwargs['monitoring_interval'] != str(plexpy.CONFIG.MONITORING_INTERVAL)) or \
+                    (kwargs['refresh_libraries_interval'] != str(plexpy.CONFIG.REFRESH_LIBRARIES_INTERVAL)):
+                reschedule = True
 
         if 'monitoring_interval' in kwargs and 'refresh_users_interval' in kwargs:
             if (kwargs['monitoring_interval'] != str(plexpy.CONFIG.MONITORING_INTERVAL)) or \
@@ -532,6 +542,7 @@ class WebInterface(object):
 
         if 'pms_ip' in kwargs:
             if kwargs['pms_ip'] != plexpy.CONFIG.PMS_IP:
+                refresh_libraries = True
                 refresh_users = True
 
         if 'home_stats_cards' in kwargs:
@@ -553,6 +564,10 @@ class WebInterface(object):
         # Reconfigure scheduler if intervals changed
         if reschedule:
             plexpy.initialize_scheduler()
+
+        # Refresh users table if our server IP changes.
+        if refresh_libraries:
+            threading.Thread(target=pmsconnect.refresh_libraries).start()
 
         # Refresh users table if our server IP changes.
         if refresh_users:
@@ -1263,9 +1278,14 @@ class WebInterface(object):
             logger.warn('Unable to retrieve data.')
 
     @cherrypy.expose
+    def refresh_libraries_list(self, **kwargs):
+        threading.Thread(target=pmsconnect.refresh_libraries).start()
+        logger.info('Manual libraries list refresh requested.')
+
+    @cherrypy.expose
     def refresh_users_list(self, **kwargs):
         threading.Thread(target=plextv.refresh_users).start()
-        logger.info('Manual user list refresh requested.')
+        logger.info('Manual users list refresh requested.')
 
     @cherrypy.expose
     def get_sync(self, machine_id=None, user_id=None, **kwargs):
