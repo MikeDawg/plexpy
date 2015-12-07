@@ -94,11 +94,11 @@ _CONFIG_DEFINITIONS = {
     'GROWL_ON_CREATED': (int, 'Growl', 0),
     'GROWL_ON_EXTDOWN': (int, 'Growl', 0),
     'GROWL_ON_INTDOWN': (int, 'Growl', 0),
-    'HOME_LIBRARY_CARDS': (str, 'General', 'library_statistics_first'),
+    'HOME_LIBRARY_CARDS': (list, 'General', ['first_run']),
     'HOME_STATS_LENGTH': (int, 'General', 30),
     'HOME_STATS_TYPE': (int, 'General', 0),
     'HOME_STATS_COUNT': (int, 'General', 5),
-    'HOME_STATS_CARDS': (str, 'General', 'watch_statistics, top_tv, popular_tv, top_movies, popular_movies, top_music, popular_music, top_users, top_platforms, last_watched'),
+    'HOME_STATS_CARDS': (list, 'General', ['top_tv', 'popular_tv', 'top_movies', 'popular_movies', 'top_music', 'popular_music', 'top_users', 'top_platforms', 'last_watched']),
     'HTTPS_CERT': (str, 'General', ''),
     'HTTPS_KEY': (str, 'General', ''),
     'HTTP_HOST': (str, 'General', '0.0.0.0'),
@@ -414,3 +414,13 @@ class Config(object):
                 self.MOVIE_LOGGING_ENABLE = 0
                 self.TV_LOGGING_ENABLE = 0
             self.CONFIG_VERSION = '1'
+        if self.CONFIG_VERSION == '1':
+            home_stats_cards = ''.join(self.HOME_STATS_CARDS).split(', ')
+            home_stats_cards.remove('watch_statistics')
+            self.HOME_STATS_CARDS = home_stats_cards
+
+            home_library_cards = ''.join(self.HOME_LIBRARY_CARDS).split(', ')
+            home_library_cards.remove('library_statistics')
+            self.HOME_LIBRARY_CARDS = home_library_cards
+
+            self.CONFIG_VERSION = '2'

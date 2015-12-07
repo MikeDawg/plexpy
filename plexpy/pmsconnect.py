@@ -41,6 +41,13 @@ def refresh_libraries():
     logger.info("Requesting libraries list refresh...")
     library_sections = PmsConnect().get_library_details()
 
+    if plexpy.CONFIG.HOME_LIBRARY_CARDS == ['first_run']:
+        populate_cards = True
+    else:
+        populate_cards = False
+    
+    cards = []
+
     if library_sections:
         monitor_db = database.MonitorDatabase()
 
@@ -56,6 +63,12 @@ def refresh_libraries():
 
             monitor_db.upsert('library_sections', key_dict=section_keys, value_dict=section_values)
 
+            cards.append(section['key'])
+
+        if populate_cards:
+            plexpy.CONFIG.__setattr__('HOME_LIBRARY_CARDS', cards)
+            plexpy.CONFIG.write()
+        
         logger.info("Libraries list refreshed.")
     else:
         logger.warn("Unable to refresh libraries list.")
