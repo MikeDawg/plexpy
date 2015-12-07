@@ -145,23 +145,12 @@ class WebInterface(object):
 
     @cherrypy.expose
     def library_stats(self, **kwargs):
-        pms_connect = pmsconnect.PmsConnect()
+        data_factory = datafactory.DataFactory()
 
         library_cards = plexpy.CONFIG.HOME_LIBRARY_CARDS.split(', ')
 
-        if library_cards == ['library_statistics_first']:
-            library_cards = ['library_statistics']
-            server_children = pms_connect.get_server_children()
-            server_libraries = server_children['libraries_list']
-
-            for library in server_libraries:
-                library_cards.append(library['key'])
-
-            plexpy.CONFIG.HOME_LIBRARY_CARDS = ', '.join(library_cards)
-            plexpy.CONFIG.write()
-
-        stats_data = pms_connect.get_library_stats(library_cards=library_cards)
-
+        stats_data = data_factory.get_library_stats(library_cards=library_cards)
+        
         return serve_template(templatename="library_stats.html", title="Library Stats", data=stats_data)
 
     @cherrypy.expose

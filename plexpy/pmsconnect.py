@@ -39,7 +39,7 @@ def get_server_friendly_name():
 
 def refresh_libraries():
     logger.info("Requesting libraries list refresh...")
-    library_sections = PmsConnect().get_library_stats()
+    library_sections = PmsConnect().get_library_details()
 
     if library_sections:
         monitor_db = database.MonitorDatabase()
@@ -1528,7 +1528,7 @@ class PmsConnect(object):
 
     Output: array
     """
-    def get_library_stats(self, library_cards=''):
+    def get_library_details(self):
         server_libraries = self.get_server_children()
 
         server_library_stats = []
