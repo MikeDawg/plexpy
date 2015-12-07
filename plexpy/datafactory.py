@@ -1087,8 +1087,8 @@ class DataFactory(object):
             return None
 
         for item in result:
-            id = item[0]
-            rating_key = item[1]
+            id = item['id']
+            rating_key = item['rating_key']
 
             result = pms_connect.get_metadata_details(rating_key=rating_key)
 
@@ -1136,6 +1136,6 @@ class DataFactory(object):
         ip_address = 'N/A'
 
         for item in result:
-            ip_address = item[0]
+            ip_address = item['ip_address']
 
         return ip_address
