@@ -13,7 +13,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with PlexPy.  If not, see <http://www.gnu.org/licenses/>.
 
-from plexpy import logger, notifiers, plextv, pmsconnect, common, log_reader, datafactory, graphs, users, helpers
+from plexpy import logger, notifiers, plextv, pmsconnect, common, log_reader, datafactory, graphs, users, libraries
 from plexpy.helpers import checked, radio
 
 from mako.lookup import TemplateLookup
@@ -166,6 +166,10 @@ class WebInterface(object):
         return serve_template(templatename="users.html", title="Users")
 
     @cherrypy.expose
+    def libraries(self):
+        return serve_template(templatename="libraries.html", title="Libraries")
+
+    @cherrypy.expose
     def graphs(self):
 
         config = {
@@ -284,6 +288,15 @@ class WebInterface(object):
 
         cherrypy.response.headers['Content-type'] = 'application/json'
         return json.dumps(user_list)
+
+    @cherrypy.expose
+    def get_library_list(self, **kwargs):
+
+        library_data = libraries.Libraries()
+        library_list = library_data.get_library_list(kwargs=kwargs)
+
+        cherrypy.response.headers['Content-type'] = 'application/json'
+        return json.dumps(library_list)
 
     @cherrypy.expose
     def checkGithub(self):
