@@ -41,6 +41,8 @@ def refresh_libraries():
     logger.info("Requesting libraries list refresh...")
     library_sections = PmsConnect().get_library_details()
 
+    server_id = plexpy.CONFIG.PMS_IDENTIFIER
+
     if plexpy.CONFIG.HOME_LIBRARY_CARDS == ['first_run']:
         populate_cards = True
     else:
@@ -52,14 +54,17 @@ def refresh_libraries():
         monitor_db = database.MonitorDatabase()
 
         for section in library_sections:
-            section_keys = {'section_id': section['key']}
-            section_values = {'section_id': section['key'],
-                                'section_name': section['title'],
-                                'section_type': section['type'],
-                                'thumb': section['thumb'],
-                                'count': section['count'],
-                                'parent_count': section.get('parent_count', None),
-                                'child_count': section.get('child_count', None)}
+            section_keys = {'server_id': server_id,
+                            'section_id': section['key']}
+            section_values = {'server_id': server_id,
+                              'section_id': section['key'],
+                              'section_name': section['title'],
+                              'section_type': section['type'],
+                              'thumb': section['thumb'],
+                              'count': section['count'],
+                              'parent_count': section.get('parent_count', None),
+                              'child_count': section.get('child_count', None)
+                              }
 
             monitor_db.upsert('library_sections', key_dict=section_keys, value_dict=section_values)
 
