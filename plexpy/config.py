@@ -415,12 +415,14 @@ class Config(object):
                 self.TV_LOGGING_ENABLE = 0
             self.CONFIG_VERSION = '1'
         if self.CONFIG_VERSION == '1':
-            home_stats_cards = ''.join(self.HOME_STATS_CARDS).split(', ')
-            home_stats_cards.remove('watch_statistics')
-            self.HOME_STATS_CARDS = home_stats_cards
+            if type(self.HOME_STATS_CARDS) != list:
+                home_stats_cards = ''.join(self.HOME_STATS_CARDS).split(', ')
+                home_stats_cards.remove('watch_statistics')
+                self.HOME_STATS_CARDS = home_stats_cards
 
-            home_library_cards = ''.join(self.HOME_LIBRARY_CARDS).split(', ')
-            home_library_cards.remove('library_statistics')
-            self.HOME_LIBRARY_CARDS = home_library_cards
+            if type(self.HOME_LIBRARY_CARDS) != list:
+                home_library_cards = ''.join(self.HOME_LIBRARY_CARDS).split(', ')
+                home_library_cards.remove('library_statistics')
+                self.HOME_LIBRARY_CARDS = home_library_cards
 
             self.CONFIG_VERSION = '2'

@@ -536,14 +536,17 @@ class WebInterface(object):
 
         if 'home_stats_cards' not in kwargs:
             kwargs['home_stats_cards'] = []
+        elif kwargs['home_stats_cards'] == 'first_run_wizard':
+            kwargs['home_stats_cards'] = plexpy.CONFIG.HOME_STATS_CARDS
         elif type(kwargs['home_stats_cards']) != list:
             kwargs['home_stats_cards'] = [kwargs['home_stats_cards']]
 
         if 'home_library_cards' not in kwargs:
             kwargs['home_library_cards'] = []
+        elif kwargs['home_library_cards'] == 'first_run_wizard':
+            kwargs['home_library_cards'] = plexpy.CONFIG.HOME_LIBRARY_CARDS
         elif type(kwargs['home_library_cards']) != list:
             kwargs['home_library_cards'] = [kwargs['home_library_cards']]
-
 
         plexpy.CONFIG.process_kwargs(kwargs)
 
