@@ -662,7 +662,7 @@ class DataFactory(object):
 
         return stream_output
 
-    def get_recently_watched(self, user=None, user_id=None, limit='10'):
+    def get_recently_watched(self, user=None, user_id=None, library_id=None, limit='10'):
         monitor_db = database.MonitorDatabase()
         recently_watched = []
 
@@ -692,6 +692,17 @@ class DataFactory(object):
                         ' ELSE session_history.rating_key END) ' \
                         'ORDER BY started DESC LIMIT ?'
                 result = monitor_db.select(query, args=[user, limit])
+            elif library_id:
+                query = 'SELECT session_history.id, session_history.media_type, session_history.rating_key, session_history.parent_rating_key, ' \
+                        'title, parent_title, grandparent_title, thumb, parent_thumb, grandparent_thumb, media_index, parent_media_index, ' \
+                        'year, started, user ' \
+                        'FROM session_history_metadata ' \
+                        'JOIN session_history ON session_history_metadata.id = session_history.id ' \
+                        'WHERE library_id = ? ' \
+                        'GROUP BY (CASE WHEN session_history.media_type = "track" THEN session_history.parent_rating_key ' \
+                        ' ELSE session_history.rating_key END) ' \
+                        'ORDER BY started DESC LIMIT ?'
+                result = monitor_db.select(query, args=[library_id, limit])
             else:
                 query = 'SELECT session_history.id, session_history.media_type, session_history.rating_key, session_history.parent_rating_key, ' \
                         'title, parent_title, grandparent_title, thumb, parent_thumb, grandparent_thumb, media_index, parent_media_index, ' \
