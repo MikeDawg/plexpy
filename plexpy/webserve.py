@@ -262,6 +262,26 @@ class WebInterface(object):
                 return status_message
 
     @cherrypy.expose
+    def edit_library(self, section_id=None, **kwargs):
+        do_notify = kwargs.get('do_notify', 0)
+        keep_history = kwargs.get('keep_history', 0)
+        custom_thumb = kwargs.get('custom_thumb', '')
+
+        library_data = libraries.Libraries()
+        if section_id:
+            try:
+                library_data.set_library_config(section_id=section_id,
+                                                do_notify=do_notify,
+                                                keep_history=keep_history,
+                                                custom_thumb=custom_thumb)
+
+                status_message = "Successfully updated library."
+                return status_message
+            except:
+                status_message = "Failed to update library."
+                return status_message
+
+    @cherrypy.expose
     def get_stream_data(self, row_id=None, user=None, **kwargs):
 
         data_factory = datafactory.DataFactory()
@@ -1505,6 +1525,20 @@ class WebInterface(object):
                 return json.dumps({'message': delete_row})
         elif username:
             delete_row = data_factory.undelete_user(username=username)
+
+            if delete_row:
+                cherrypy.response.headers['Content-type'] = 'application/json'
+                return json.dumps({'message': delete_row})
+        else:
+            cherrypy.response.headers['Content-type'] = 'application/json'
+            return json.dumps({'message': 'no data received'})
+
+    @cherrypy.expose
+    def delete_all_library_history(self, library_id, **kwargs):
+        library_data = libraries.Libraries()
+
+        if library_id:
+            delete_row = library_data.delete_all_library_history(library_id=library_id)
 
             if delete_row:
                 cherrypy.response.headers['Content-type'] = 'application/json'

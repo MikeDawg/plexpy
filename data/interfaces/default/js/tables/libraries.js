@@ -115,7 +115,7 @@ libraries_list_table_options = {
         },
         {
             "targets": [7],
-            "data": "last_seen",
+            "data": "last_accessed",
             "render": function (data, type, full) {
                 if (data) {
                     return moment(data, "X").fromNow();
@@ -213,23 +213,22 @@ $('#libraries_list_table').on('change', 'td.edit-control > .edit-library-toggles
     if ($('#keep_history-' + rowData['section_id']).is(':checked')) {
         keep_history = 1;
     }
-
-    //$.ajax({
-    //    url: 'edit_user',
-    //    data: {
-    //        user_id: rowData['user_id'],
-    //        friendly_name: friendly_name,
-    //        do_notify: do_notify,
-    //        keep_history: keep_history,
-    //        thumb: rowData['user_thumb']
-    //    },
-    //    cache: false,
-    //    async: true,
-    //    success: function (data) {
-    //        var msg = "User updated";
-    //        showMsg(msg, false, true, 2000);
-    //    }
-    //});
+    
+    $.ajax({
+        url: 'edit_library',
+        data: {
+            section_id: rowData['section_id'],
+            do_notify: do_notify,
+            keep_history: keep_history,
+            custom_thumb: rowData['library_thumb']
+        },
+        cache: false,
+        async: true,
+        success: function (data) {
+            var msg = "Library updated";
+            showMsg(msg, false, true, 2000);
+        }
+    });
 });
 
 $('#libraries_list_table').on('click', 'td.edit-control > .edit-library-toggles > button.purge-library', function () {

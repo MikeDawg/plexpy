@@ -30,9 +30,10 @@ class Libraries(object):
                    'library_sections.count as count',
                    'library_sections.parent_count',
                    'library_sections.child_count',
-                   'library_sections.thumb as library_thumb',
+                   '(CASE WHEN library_sections.custom_thumb_url IS NULL THEN library_sections.thumb ELSE ' \
+                   'custom_thumb_url END) AS library_thumb',
                    'COUNT(session_history.id) as plays',
-                   'MAX(session_history.started) as last_seen',
+                   'MAX(session_history.started) as last_accessed',
                    'session_history_metadata.full_title as last_watched',
                    'session_history_metadata.thumb',
                    'session_history_metadata.parent_thumb',
@@ -59,7 +60,7 @@ class Libraries(object):
                                                       ['session_history_metadata.id', 'session_history_media_info.id']],
                                           kwargs=kwargs)
         except:
-            logger.warn("Unable to execute database query.")
+            logger.warn("Unable to execute database query for get_library_list.")
             return {'recordsFiltered': 0,
                     'recordsTotal': 0,
                     'draw': 0,
@@ -78,7 +79,7 @@ class Libraries(object):
                 thumb = item['thumb']
 
             row = {'plays': item['plays'],
-                   'last_seen': item['last_seen'],
+                   'last_accessed': item['last_accessed'],
                    'last_watched': item['last_watched'],
                    'thumb': thumb,
                    'media_type': item['media_type'],
@@ -192,35 +193,18 @@ class Libraries(object):
         return dict
 
     # TODO: The getter and setter for this needs to become a config getter/setter for more than just friendlyname
-    def set_user_friendly_name(self, user=None, user_id=None, friendly_name=None, do_notify=0, keep_history=1):
-        if user_id:
-            if friendly_name.strip() == '':
-                friendly_name = None
-
+    def set_library_config(self, section_id=None, do_notify=1, keep_history=1, custom_thumb=''):
+        if section_id:
             monitor_db = database.MonitorDatabase()
 
-            control_value_dict = {"user_id": user_id}
-            new_value_dict = {"friendly_name": friendly_name,
-                              "do_notify": do_notify,
-                              "keep_history": keep_history}
+            key_dict = {'section_id': section_id}
+            value_dict = {'do_notify': do_notify,
+                          'keep_history': keep_history,
+                          'custom_thumb_url': custom_thumb}
             try:
-                monitor_db.upsert('users', new_value_dict, control_value_dict)
-            except Exception, e:
-                logger.debug(u"Uncaught exception %s" % e)
-        if user:
-            if friendly_name.strip() == '':
-                friendly_name = None
-
-            monitor_db = database.MonitorDatabase()
-
-            control_value_dict = {"username": user}
-            new_value_dict = {"friendly_name": friendly_name,
-                              "do_notify": do_notify,
-                              "keep_history": keep_history}
-            try:
-                monitor_db.upsert('users', new_value_dict, control_value_dict)
-            except Exception, e:
-                logger.debug(u"Uncaught exception %s" % e)
+                monitor_db.upsert('library_sections', value_dict, key_dict)
+            except:
+                logger.warn("Unable to execute database query for set_user_friendly_name.")
 
     def set_user_profile_url(self, user=None, user_id=None, profile_url=None):
         if user_id:
@@ -527,3 +511,31 @@ class Libraries(object):
             result_id += 1
 
         return player_stats
+
+    def delete_all_library_history(self, library_id=None):
+        monitor_db = database.MonitorDatabase()
+
+        if library_id.isdigit():
+            logger.info(u"PlexPy Libraries :: Deleting all history for library id %s from database." % library_id)
+            session_history_media_info_del = \
+                monitor_db.action('DELETE FROM '
+                                  'session_history_media_info '
+                                  'WHERE session_history_media_info.id IN (SELECT session_history_media_info.id '
+                                  'FROM session_history_media_info '
+                                  'JOIN session_history_metadata ON session_history_media_info.id = session_history_metadata.id '
+                                  'WHERE session_history_metadata.library_id = ?)', [library_id])
+            session_history_del = \
+                monitor_db.action('DELETE FROM '
+                                  'session_history '
+                                  'WHERE session_history.id IN (SELECT session_history.id '
+                                  'FROM session_history '
+                                  'JOIN session_history_metadata ON session_history.id = session_history_metadata.id '
+                                  'WHERE session_history_metadata.library_id = ?)', [library_id])
+            session_history_metadata_del = \
+                monitor_db.action('DELETE FROM '
+                                  'session_history_metadata '
+                                  'WHERE session_history_metadata.library_id = ?', [library_id])
+
+            return 'Deleted all items for library_id %s.' % library_id
+        else:
+            return 'Unable to delete items. Input library_id not valid.'
