@@ -80,7 +80,7 @@ class WebInterface(object):
         config = {
             "launch_browser": checked(plexpy.CONFIG.LAUNCH_BROWSER),
             "refresh_users_on_startup": checked(plexpy.CONFIG.REFRESH_USERS_ON_STARTUP),
-            "refresh_librareis_on_startup": checked(plexpy.CONFIG.REFRESH_LIBRARIES_ON_STARTUP),
+            "refresh_libraries_on_startup": checked(plexpy.CONFIG.REFRESH_LIBRARIES_ON_STARTUP),
             "pms_identifier": plexpy.CONFIG.PMS_IDENTIFIER,
             "pms_ip": plexpy.CONFIG.PMS_IP,
             "pms_is_remote": checked(plexpy.CONFIG.PMS_IS_REMOTE),
